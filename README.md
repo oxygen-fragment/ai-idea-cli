@@ -18,11 +18,13 @@ Transform project ideas into production-ready codebases through intelligent vali
 ### 1. Installation
 
 ```bash
-git clone https://github.com/anthropics/idea-cli.git
-cd idea-cli
+# Install from PyPI
+pip install ai-idea-cli
+
+# Or create a virtual environment first (recommended)
 python -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-pip install -e .
+pip install ai-idea-cli
 ```
 
 ### 2. Try Demo Mode Immediately
@@ -139,47 +141,83 @@ export VALIDATOR_API_KEY="your_validator_key"
 
 ## Configuration
 
-### User Configuration (`~/.idea-cli/config.json`)
+### Quick Setup Guide
 
+**For Demo Mode (Default - No Setup Required):**
+```bash
+idea init-config  # Creates config with demo mode enabled
+idea validate "test idea"  # Works immediately
+```
+
+**For Full Mode (API Keys Required):**
+```bash
+# 1. Initialize configuration
+idea init-config
+
+# 2. Set environment variables
+export ANTHROPIC_API_KEY="your_claude_api_key_here"
+export VALIDATOR_API_KEY="your_validator_api_key_here"  # Optional
+
+# 3. Edit config to disable demo mode
+nano ~/.idea-cli/config.json
+# Change: "demoMode": false
+```
+
+### Configuration File (`~/.idea-cli/config.json`)
+
+The configuration file is automatically created when you run `idea init-config`. Here's what each section does:
+
+**Demo Mode Configuration (Default):**
 ```json
 {
+  "demoMode": true,
+  "retentionDays": 30,
+  "scaffold": {
+    "templateVersion": "main"
+  }
+}
+```
+
+**Full Mode Configuration:**
+```json
+{
+  "demoMode": false,
   "validator": {
     "endpoint": "https://api.example.com/validate",
     "apiKeyEnv": "VALIDATOR_API_KEY",
-    "acceptField": "accepted",
-    "scoreField": "score",
     "minScore": 0.7
   },
   "models": {
     "plan": "claude-3-5-sonnet-20241022",
-    "queue": "claude-3-5-sonnet-20241022",
+    "queue": "claude-3-5-sonnet-20241022", 
     "summarise": "claude-3-5-sonnet-20241022",
     "apiKeyEnv": "ANTHROPIC_API_KEY"
   },
   "scaffold": {
     "templateVersion": "main"
   },
-  "retentionDays": 30,
-  "demoMode": true
+  "retentionDays": 30
 }
 ```
 
 ### Environment Variables
 
-| Variable | Purpose | Required For |
-|----------|---------|--------------|
-| `ANTHROPIC_API_KEY` | Claude API access | Planning, queue execution, summarization |
-| `OPENAI_API_KEY` | OpenAI API access | Alternative to Claude |
-| `VALIDATOR_API_KEY` | Custom validator API | Real idea validation |
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `ANTHROPIC_API_KEY` | Full mode | Claude API for planning, queue execution, summarization |
+| `OPENAI_API_KEY` | Alternative | OpenAI API as alternative to Claude |
+| `VALIDATOR_API_KEY` | Optional | Custom validator API for real idea validation |
 
 ### Supported LLM Providers
 
-**Anthropic Claude:**
+**Anthropic Claude (Recommended):**
 - Models: `claude-3-5-sonnet-20241022`, `claude-3-haiku-20240307`
+- Get API key: https://console.anthropic.com/
 - Install: `pip install anthropic`
 
 **OpenAI GPT:**
 - Models: `gpt-4`, `gpt-3.5-turbo`
+- Get API key: https://platform.openai.com/api-keys
 - Install: `pip install openai`
 
 ## Project Structure
@@ -252,21 +290,28 @@ If GitHub CLI is not available, idea-cli provides:
 
 ### Common Issues
 
-**"No such command 'validate'"**
-- Fix: Ensure package is installed with `pip install -e .`
-- Check: `pip show idea-cli` should show installation
+**"Command 'idea' not found"**
+- Fix: Ensure package is installed: `pip install ai-idea-cli`
+- Check: `pip show ai-idea-cli` should show installation
+- Try: Restart your terminal or source your shell profile
 
 **"Configuration error: API key environment variable not configured"**
-- Demo Mode: Ensure `demoMode: true` in `~/.idea-cli/config.json`
-- Full Mode: Set environment variables for your API keys
+- **For Demo Mode:** Run `idea init-config` and verify `"demoMode": true` in config
+- **For Full Mode:** Set `export ANTHROPIC_API_KEY=your_key` and ensure `"demoMode": false`
 
 **"Failed to initialize config"**
-- Fix: Check permissions for `~/.idea-cli/` directory
+- Fix: Check permissions: `ls -la ~/` (should be writable)
 - Try: `mkdir -p ~/.idea-cli && idea init-config`
+- Alternative: Use `--config-dir` flag to specify different location
 
-**Import errors for LLM packages**
-- Fix: `pip install anthropic` or `pip install openai`
-- Note: Only install packages for LLM providers you plan to use
+**"Import errors for anthropic/openai packages"**
+- Fix: `pip install anthropic` (for Claude) or `pip install openai` (for GPT)
+- Note: Only needed for full mode, demo mode works without these packages
+
+**Commands work but show demo responses**
+- This is normal! Demo mode is the default
+- To upgrade: Set API keys and change `"demoMode": false` in config
+- Verify: `echo $ANTHROPIC_API_KEY` should show your key
 
 ### Performance Tips
 
@@ -287,19 +332,33 @@ idea init-config  # Shows current config path and status
 
 ## Contributing
 
-1. **Setup development environment**: `pip install -e .`
-2. **Run tests**: `pytest -v`
-3. **Check linting**: `ruff check . && ruff format --check .`
-4. **Test in demo mode**: All commands should work without API keys
-5. **Test error handling**: Verify issue reporting functionality
+We welcome contributions! Here's how to get started:
+
+### Quick Setup
+```bash
+# Fork the repository on GitHub
+git clone https://github.com/yourusername/ai-idea-cli.git
+cd ai-idea-cli
+
+# Install in development mode
+pip install -e .
+
+# Test the installation
+idea --help
+```
 
 ### Development Workflow
+1. **Test demo mode**: All commands should work without API keys
+2. **Test full mode**: Set API keys and test enhanced features  
+3. **Run quality checks**: `ruff check . && ruff format --check .`
+4. **Test error handling**: Verify issue reporting functionality
+5. **Update documentation**: Keep README and docstrings current
 
-1. Test demo mode functionality
-2. Test full mode with API keys
-3. Test error scenarios and issue reporting
-4. Run pre-commit hooks
-5. Update documentation if needed
+### Pull Request Guidelines
+- Test both demo and full modes
+- Include tests for new features
+- Update documentation for user-facing changes
+- Follow existing code style and patterns
 
 ## License
 
