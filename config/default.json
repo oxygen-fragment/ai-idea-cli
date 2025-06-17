@@ -1,0 +1,25 @@
+{
+  "validator": {
+    "endpoint": "<<<FILL_ME_VALIDATOR_ENDPOINT_URL>>>",
+    "apiKeyEnv": "<<<FILL_ME_VALIDATOR_API_KEY_ENV>>>",
+    "acceptField": "accepted",
+    "scoreField": "score",
+    "minScore": 0.7
+  },
+  "scaffoldEndpoint": "<<<FILL_ME_SCAFFOLD_ENDPOINT_URL>>>",
+  "models": {
+    "plan": "claude-3-5-sonnet-20241022",
+    "queue": "claude-3-5-sonnet-20241022",
+    "summarise": "claude-3-5-sonnet-20241022",
+    "apiKeyEnv": "<<<FILL_ME_LLM_API_KEY_ENV>>>"
+  },
+  "scaffold": {
+    "templateVersion": "main"
+  },
+  "retentionDays": 30,
+  "demoMode": true,
+  "backend": {
+    "url": "<<<FILL_ME_BACKEND_URL>>>",
+    "apiKeyEnv": "<<<FILL_ME_BACKEND_API_KEY_ENV>>>"
+  }
+}
