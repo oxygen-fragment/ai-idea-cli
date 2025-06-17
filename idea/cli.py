@@ -34,6 +34,11 @@ from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 
+from idea.clients.experience import ExperienceManager
+
+# Import HTTP clients for backend services
+from idea.clients.planner import generate_plan
+from idea.clients.queue import QueueRunner
 from idea.config import (
     ConfigError,
     check_api_key,
@@ -50,21 +55,19 @@ from idea.scaffold.node import scaffold_node
 from idea.scaffold.python import scaffold_python
 from idea.validator import ValidationError, display_validation_result, validate_idea
 
-# Import HTTP clients for backend services
-from idea.clients.planner import generate_plan
-from idea.clients.queue import QueueRunner  
-from idea.clients.experience import ExperienceManager
 
 # Local utility functions
 def save_plan(plan: Plan, target_dir: Path) -> None:
     """Save the plan to .idea/plan.json."""
     import json
+
     idea_dir = target_dir / ".idea"
     idea_dir.mkdir(exist_ok=True)
-    
+
     plan_file = idea_dir / "plan.json"
     with open(plan_file, "w") as f:
         json.dump(plan.model_dump(), f, indent=2)
+
 
 app = typer.Typer(help="AI-powered meta-scaffolder and SDLC engine")
 console = Console()

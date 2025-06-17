@@ -5,36 +5,32 @@ This module provides HTTP client functionality for the AI-powered
 project planning service.
 """
 
-from typing import Dict, Any
-from .base import BackendClient
 from idea.models import Plan
-import json
+
+from .base import BackendClient
 
 
 class PlannerClient(BackendClient):
     """Client for planner backend service."""
-    
+
     def __init__(self):
         super().__init__("planner", "/api/v1/planner")
-    
+
     async def generate_plan(self, pitch: str, category: str = "personal") -> Plan:
         """
         Generate a project plan using the backend planner service.
-        
+
         Args:
             pitch: Project idea description
             category: Project category (personal or product)
-            
+
         Returns:
             Generated plan object
         """
-        request_data = {
-            "idea": pitch,
-            "category": category
-        }
-        
+        request_data = {"idea": pitch, "category": category}
+
         response_data = await self.post("/generate", request_data)
-        
+
         # Convert response to Plan model
         return Plan(
             project_slug=response_data["project_slug"],
@@ -49,27 +45,28 @@ class PlannerClient(BackendClient):
                     "name": story["name"],
                     "description": story["description"],
                     "acceptance_criteria": story["acceptance_criteria"],
-                    "epic": story["epic"]
+                    "epic": story["epic"],
                 }
                 for story in response_data["stories"]
             ],
-            stack_recommendations=response_data["stack_recommendations"]
+            stack_recommendations=response_data["stack_recommendations"],
         )
 
 
 async def generate_plan(pitch: str, category: str = "personal") -> Plan:
     """
     Generate a plan using backend service or demo mode.
-    
+
     This function maintains the same interface as the original
     generate_plan function but uses HTTP client for backend.
     """
     from idea.config import is_demo_mode
-    
+
     if is_demo_mode():
         # Return demo plan
         from idea.demo import demo_generate_plan
+
         return demo_generate_plan(pitch, category)
-    
+
     async with PlannerClient() as client:
         return await client.generate_plan(pitch, category)

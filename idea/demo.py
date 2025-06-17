@@ -112,36 +112,91 @@ def demo_generate_plan(pitch: str, category: str = "personal") -> Plan:
             title="Demo Planning",
         )
     )
-    
+
     # Create a simple slug from the pitch
-    project_slug = pitch.lower().replace(" ", "-").replace("'", "").replace('"', '')
-    
+    project_slug = pitch.lower().replace(" ", "-").replace("'", "").replace('"', "")
+
     # Generate demo plan based on pitch keywords
-    if any(word in pitch.lower() for word in ["web", "site", "app", "frontend", "react", "vue", "angular"]):
+    if any(
+        word in pitch.lower()
+        for word in ["web", "site", "app", "frontend", "react", "vue", "angular"]
+    ):
         language = "node"
         package_name = None
-        epics = ["User Interface", "Backend API", "Database", "Authentication", "Deployment"]
+        epics = [
+            "User Interface",
+            "Backend API",
+            "Database",
+            "Authentication",
+            "Deployment",
+        ]
         stories = [
-            Story(id="story-1", name="Create landing page", description="Build main landing page with hero section"),
-            Story(id="story-2", name="Set up routing", description="Configure client-side routing"),
-            Story(id="story-3", name="Add user authentication", description="Implement login/signup functionality"),
-            Story(id="story-4", name="Connect to database", description="Set up database connection and models"),
-            Story(id="story-5", name="Deploy to production", description="Configure deployment pipeline"),
+            Story(
+                id="story-1",
+                name="Create landing page",
+                description="Build main landing page with hero section",
+            ),
+            Story(
+                id="story-2",
+                name="Set up routing",
+                description="Configure client-side routing",
+            ),
+            Story(
+                id="story-3",
+                name="Add user authentication",
+                description="Implement login/signup functionality",
+            ),
+            Story(
+                id="story-4",
+                name="Connect to database",
+                description="Set up database connection and models",
+            ),
+            Story(
+                id="story-5",
+                name="Deploy to production",
+                description="Configure deployment pipeline",
+            ),
         ]
         stack = ["React", "Node.js", "Express", "MongoDB", "JWT"]
     else:
         language = "python"
         package_name = project_slug.replace("-", "_")
-        epics = ["Core Logic", "Data Processing", "Testing", "Documentation", "Deployment"]
+        epics = [
+            "Core Logic",
+            "Data Processing",
+            "Testing",
+            "Documentation",
+            "Deployment",
+        ]
         stories = [
-            Story(id="story-1", name="Set up project structure", description="Create Python package structure"),
-            Story(id="story-2", name="Implement main functionality", description="Build core application logic"),
-            Story(id="story-3", name="Add data processing", description="Handle input/output data processing"),
-            Story(id="story-4", name="Write tests", description="Create comprehensive test suite"),
-            Story(id="story-5", name="Create documentation", description="Write README and API documentation"),
+            Story(
+                id="story-1",
+                name="Set up project structure",
+                description="Create Python package structure",
+            ),
+            Story(
+                id="story-2",
+                name="Implement main functionality",
+                description="Build core application logic",
+            ),
+            Story(
+                id="story-3",
+                name="Add data processing",
+                description="Handle input/output data processing",
+            ),
+            Story(
+                id="story-4",
+                name="Write tests",
+                description="Create comprehensive test suite",
+            ),
+            Story(
+                id="story-5",
+                name="Create documentation",
+                description="Write README and API documentation",
+            ),
         ]
         stack = ["Python 3.12", "pytest", "Click", "SQLAlchemy", "FastAPI"]
-    
+
     return Plan(
         project_slug=project_slug,
         one_liner=f"Demo project for {pitch}",

@@ -189,7 +189,7 @@ The configuration file is automatically created when you run `idea init-config`.
   },
   "models": {
     "plan": "claude-3-5-sonnet-20241022",
-    "queue": "claude-3-5-sonnet-20241022", 
+    "queue": "claude-3-5-sonnet-20241022",
     "summarise": "claude-3-5-sonnet-20241022",
     "apiKeyEnv": "ANTHROPIC_API_KEY"
   },
@@ -349,7 +349,7 @@ idea --help
 
 ### Development Workflow
 1. **Test demo mode**: All commands should work without API keys
-2. **Test full mode**: Set API keys and test enhanced features  
+2. **Test full mode**: Set API keys and test enhanced features
 3. **Run quality checks**: `ruff check . && ruff format --check .`
 4. **Test error handling**: Verify issue reporting functionality
 5. **Update documentation**: Keep README and docstrings current

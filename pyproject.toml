@@ -64,7 +64,7 @@ idea = [
 ]
 "*" = [
     "*.json",
-    "*.yaml", 
+    "*.yaml",
     "*.yml",
     "*.jinja",
     "*.md"
